@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.phase3end.entity.User;
 import com.phase3end.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,17 +27,25 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void getUser(long uId) {
+	public User getUser(long uId) {
 		try {
-			userRepository.findById(uId);
+			return userRepository.findById(uId).get();
 		}catch(Exception e) {
 			throw e;
 		}
 		
 	}
-	
-	public User testUser(User user) {
-		return userRepository.save(user);
+
+	@Override
+	public List<User> getAllUsers() {
+		try {
+			return (List<User>)userRepository.findAll();
+		}catch(Exception e) {
+		
+		}
+		return null;
 	}
 
+
+	
 }

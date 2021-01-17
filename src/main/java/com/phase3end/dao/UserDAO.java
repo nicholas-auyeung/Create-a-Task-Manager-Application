@@ -1,12 +1,13 @@
 package com.phase3end.dao;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.phase3end.entity.User;
 
 public interface UserDAO{
 	
 	public void addUser(User usr);
-	public void getUser(long uId);
+	public User getUser(long uId);
+	public List<User> getAllUsers();
 		
 }

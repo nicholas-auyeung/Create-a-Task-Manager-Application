@@ -19,13 +19,9 @@ public class UserRESTController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public RedirectView addUser(User usr) {
+		
 		userService.addUser(usr);
-		return new RedirectView("/dashboard");
+		return new RedirectView("/dashboard/" + usr.getUId());
 	}
-	
-	//login
-	
-	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String getUser(S)
 	
 }

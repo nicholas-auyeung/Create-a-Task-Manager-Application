@@ -1,5 +1,7 @@
 package com.phase3end.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,22 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void getUser(long uId) {
+	public User getUser(long uId) {
 		try {
-			userDao.getUser(uId);
+			return userDao.getUser(uId);
 		}catch(Exception e) {
 			throw e;
 		}
 		
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		try {
+			return userDao.getAllUsers();
+		}catch(Exception e) {
+			throw e;
+		}
 	}
 	
 }
