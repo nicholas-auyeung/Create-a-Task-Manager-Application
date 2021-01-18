@@ -5,45 +5,50 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <meta charset="UTF-8">
 <title>Update Task Form</title>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  $( function() {
+	$( "#datepicker2" ).datepicker();
+  } );
+ </script>
 </head>
 <body>
-	<div align="center">
-		<h1>Edit Task</h1>
-		 <form:form action="update" method="post" modelAttribute="task">
-	            <table border="0" cellpadding="5">
-	                <tr>
-	                    <td>ID: </td>
-	                    <td>${task.taskId}
-	                        <form:hidden path="taskId"/>
-	                    </td>
-	                </tr>       
-	                <tr>
-	                    <td>Task Name: </td>
-	                    <td><form:input path="taskName" /></td>
-	                </tr>
-	                <tr>
-	                    <td>Start Date: </td>
-	                    <td><form:input path="startDate" /></td>
-	                </tr>
-	                <tr>
-	                    <td>End Date: </td>
-	                    <td><form:input path="endDate" /></td>
-	                </tr>
-	                 <tr>
-	                    <td>Task Description: </td>
-	                    <td><form:input path="taskDescription" /></td>
-	                </tr>
-	                 <tr>
-	                    <td>Task Severity: </td>
-	                    <td><form:input path="taskSevirity" /></td>
-	                </tr>
-	                <tr>
-	                    <td colspan="2"><input type="submit" value="Save"></td>
-	                </tr>                   
-	            </table>
-	        </form:form>
-	 </div>
+	<h1>Edit Task</h1>
+	<form:form modelAttribute="task" action="updateTask">
+			<div>
+				<form:label path="taskId"> ID: ${task.taskId}</form:label><br/>
+				<form:hidden path="taskId" />
+				<form:label path="taskName"> Name: </form:label><br/>
+				<form:input path="taskName" />
+				<p>Start Date:<br/><input type="text" value="${task.startDate}" id="datepicker" name="startDate"></p>
+				<p>End Date:<br/><input type="text" value="${task.endDate}" id="datepicker2" name="endDate"></p>
+				<form:label path="taskDescription"> Description: </form:label><br/>
+				<form:textarea path="taskDescription" />
+				<br/>
+				<form:label path="taskEmail"> Email: </form:label><br/>
+				<form:input path="taskEmail" /><br/>
+				<form:label path="taskSevirity"> Severity: </form:label><br/>
+				<form:select path="taskSevirity"> 
+				<form:option value="None">None</form:option>
+				<form:option value="High">High</form:option>
+				<form:option value="Medium">Medium</form:option>
+				<form:option value="Low">Low</form:option>
+				</form:select>
+			</div>
+			<div><br/>
+				<input type="submit" value="Submit" />
+			</div>
+	</form:form>
+	<a href="/dashboard/${sessionId}">Back</a>
 </body>
 </html>

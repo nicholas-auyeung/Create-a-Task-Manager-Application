@@ -38,7 +38,9 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/addtask/{sessionId}", method = RequestMethod.POST)
-	public RedirectView addTask(Task task) {
+	public RedirectView addTask(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Task task) {
+		task.setStartDate(startDate);
+		task.setEndDate(endDate);
 		taskService.addTask(task);
 		userTaskService.addUserTask(new UserTask(task.getTaskId(), sessionId));
 		return new RedirectView("/dashboard/" + sessionId);
@@ -80,7 +82,10 @@ public class UserTaskController {
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.POST)
 	public RedirectView updateTasktoForm(@RequestParam("updateId") long updateId) {
-		return new RedirectView("/updatetaskform/" + updateId);
+		if(taskService.getTask(updateId) != null && userTaskService.getUserTask(taskService.getTask(updateId).getTaskId()).getUId() == sessionId) {
+			return new RedirectView("/updatetaskform/" + updateId);
+		}
+		return new RedirectView("/updatetask/" + sessionId);
 	}
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.GET)
@@ -90,7 +95,9 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.POST)
-	public RedirectView updateTaskForm(Task task) {
+	public RedirectView updateTaskForm(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Task task) {
+		task.setStartDate(startDate);
+		task.setEndDate(endDate);
 		taskService.updateTask(task);
 		return new RedirectView("/dashboard/" + sessionId);
 	}

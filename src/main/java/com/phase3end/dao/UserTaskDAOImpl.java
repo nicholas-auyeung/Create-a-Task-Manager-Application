@@ -45,4 +45,14 @@ public class UserTaskDAOImpl implements UserTaskDAO{
 		return null;
 	}
 
+	@Override
+	public UserTask getUserTask(long taskId) {
+		try {
+			return userTaskRepository.findById(taskId).get();
+		}catch(Exception e) {
+			
+		}
+		return null;
+	}
+
 }

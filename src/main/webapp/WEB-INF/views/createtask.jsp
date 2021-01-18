@@ -1,42 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <link rel="stylesheet" href="/resources/demos/style.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <meta charset="UTF-8">
 <title>Create Task</title>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  $( function() {
+	$( "#datepicker2" ).datepicker();
+  } );
+  </script>
 </head>
 <body>
-	<div align="center">
-		<h1>Create Task</h1>
-	
-		<form:form modelAttribute="form" action="addtask">
-			<form:errors path="" element="div" />
+	<h1>Create Task</h1>
+	<form:form modelAttribute="form" action="addTask">
 			<div>
-				<form:label path="taskName"> Task Name: </form:label>
+				<form:label path="taskName"> Name: </form:label><br/>
 				<form:input path="taskName" />
-				<form:errors path="taskName" />
-				<form:label path="startDate"> Start Date: </form:label>
-				<form:input path="startDate" />
-				<form:errors path="startDate" />
-				<form:label path="endDate"> End Date: </form:label>
-				<form:input path="endDate" />
-				<form:errors path="endDate" />
-				<form:label path="taskDescription">Task Description: </form:label>
-				<form:input path="taskDescription" />
-				<form:errors path="taskDescription" />
-				<form:label path="taskSevirity"> Task Severity: </form:label>
-				<form:input path="taskSevirity" />
-				<form:errors path="taskSevirity" />
-	
+				<p>Start Date:<br/><input type="text" id="datepicker" name="startDate"></p>
+				<p>End Date:<br/><input type="text" id="datepicker2" name="endDate"></p>
+				<form:label path="taskDescription"> Description: </form:label><br/>
+				<form:textarea path="taskDescription" />
+				<br/>
+				<form:label path="taskEmail"> Email: </form:label><br/>
+				<form:input path="taskEmail" /><br/>
+				<form:label path="taskSevirity"> Severity: </form:label><br/>
+				<form:select path="taskSevirity"> 
+				<form:option value="None">None</form:option>
+				<form:option value="High">High</form:option>
+				<form:option value="Medium">Medium</form:option>
+				<form:option value="Low">Low</form:option>
+				</form:select>
 			</div>
-			<div>
+			<div><br/>
 				<input type="submit" value="Submit" />
 			</div>
-		</form:form>
-	</div>
+	</form:form>
 	<a href="/dashboard/${sessionId}">Back</a>
 </body>
 </html>

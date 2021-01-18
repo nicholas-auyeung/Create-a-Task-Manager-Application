@@ -43,6 +43,16 @@ public class UserTaskServiceImpl implements UserTaskService{
 		}
 		return null;
 	}
+
+	@Override
+	public UserTask getUserTask(long taskId) {
+		try {
+			return userTaskDAO.getUserTask(taskId);
+		}catch(Exception e) {
+			
+		}
+		return null;
+	}
 	
 	
 	

@@ -76,4 +76,10 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public RedirectView userLogout() {
+		currentSessionUser = null;
+		return new RedirectView("/login");
+	}
+	
 }
