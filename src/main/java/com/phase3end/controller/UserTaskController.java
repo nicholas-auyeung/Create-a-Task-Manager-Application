@@ -62,9 +62,12 @@ public class UserTaskController {
 	
 	@RequestMapping(value = "/deletetask/{sessionId}", method = RequestMethod.POST)
 	public RedirectView deleteTask(@RequestParam("deleteId") long deleteId) {
-		taskService.deleteTask(deleteId);
-		userTaskService.deleteUserTask(deleteId);
-		return new RedirectView("/dashboard/" + sessionId);
+		if(taskService.getTask(deleteId) != null && userTaskService.getUserTask(taskService.getTask(deleteId).getTaskId()).getUId() == sessionId) {
+			taskService.deleteTask(deleteId);
+			userTaskService.deleteUserTask(deleteId);
+			return new RedirectView("/dashboard/" + sessionId);
+		}
+		return new RedirectView("/deletetask/" + sessionId);
 	}
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.GET)

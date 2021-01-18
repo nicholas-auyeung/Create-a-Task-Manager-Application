@@ -3,17 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Login</title>
 </head>
 <body>
-	<div align="center">
-		<h1>Login</h1>
+		<h1>Task Manager Login</h1>
 			<form action="login" method="post">
-				<input type = "text" name ="username">Username
-				<input type = "text" name ="password">Password
+				Username:<br/><input type = "text" name ="username"><br/>
+				Password:<br/><input type = "text" name ="password"><br/>
 				<input type="submit" value="Submit" />
 			</form>
-	</div>
+	<a href="/register">Don't have an account? Register Here</a>
 </body>
 </html>

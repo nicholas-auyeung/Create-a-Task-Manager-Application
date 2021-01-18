@@ -5,37 +5,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <title>Registration</title>
 </head>
 <body>
-	<div align="center">
-		<h1>Registration</h1>
+		<h1>Register for Task Manager</h1>
 	
 		<form:form modelAttribute="form" action="register">
 			<form:errors path="" element="div" />
 			<div>
 				<form:label path="name"> Name: </form:label>
-				<form:input path="name" />
-				<form:errors path="name" />
+				<form:input path="name" /><br/><br/>
 				<form:label path="email"> Email: </form:label>
-				<form:input path="email" />
-				<form:errors path="email" />
-				<form:label path="userName"> Username: </form:label>
-				<form:input path="userName" />
-				<form:errors path="userName" />
-				<form:label path="password"> Password: </form:label>
-				<form:input path="password" />
-				<form:errors path="password" />
+				<form:input path="email" /><br/><br/>
 				<form:label path="city"> City: </form:label>
-				<form:input path="city" />
-				<form:errors path="city" />
-	
+				<form:input path="city" /><br/><br/>
+				<form:label path="userName"> Username: </form:label>
+				<form:input path="userName" /><br/><br/>
+				<form:label path="password"> Password: </form:label>
+				<form:input path="password" /><br/><br/>
 			</div>
 			<div>
 				<input type="submit" value="Submit" />
 			</div>
 		</form:form>
-	</div>
+		<a href="/login">Already have an account? Login Here</a>
 </body>
 </html>
