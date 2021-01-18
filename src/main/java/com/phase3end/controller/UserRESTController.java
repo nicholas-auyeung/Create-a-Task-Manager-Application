@@ -1,9 +1,12 @@
 package com.phase3end.controller;
 
+import java.util.Random;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -18,10 +21,10 @@ public class UserRESTController {
 	UserService userService;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public RedirectView addUser(User usr) {
-		
-		userService.addUser(usr);
-		return new RedirectView("/dashboard/" + usr.getUId());
+	public RedirectView addUser(User usr, HttpSession session) {
+			session.setAttribute("userExists", true);
+			userService.addUser(usr);
+			return new RedirectView("/dashboard/" + usr.getUId());
 	}
 	
 }

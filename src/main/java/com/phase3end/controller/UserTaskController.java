@@ -3,6 +3,8 @@ package com.phase3end.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,11 +32,14 @@ public class UserTaskController {
 	private long sessionId = 0;
 	
 	@RequestMapping(value = "/addtask/{sessionId}", method = RequestMethod.GET)
-	public ModelAndView addTaskView(@PathVariable("sessionId") long sessionId, ModelMap map) {
-		this.sessionId = sessionId;
-		map.addAttribute("sessionId", sessionId);
-		Task task = new Task();
-		return new ModelAndView("createtask", "form", task);
+	public ModelAndView addTaskView(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
+		if((boolean) session.getAttribute("userExists")) {
+			this.sessionId = sessionId;
+			map.addAttribute("sessionId", sessionId);
+			Task task = new Task();
+			return new ModelAndView("createtask", "form", task);
+		}
+		return new ModelAndView("errors");
 	}
 	
 	@RequestMapping(value = "/addtask/{sessionId}", method = RequestMethod.POST)
@@ -47,17 +52,19 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/deletetask/{sessionId}", method = RequestMethod.GET)
-	public ModelAndView  deleteTaskView(@PathVariable("sessionId") long sessionId, ModelMap map) {
-		this.sessionId = sessionId;
-		map.addAttribute("sessionId", sessionId);
-		List<Task> taskList = new ArrayList<>();
-		userTaskService.getAllUserTask().stream().filter(userTask -> userTask.getUId() == sessionId)
-						.forEach(userTask ->{
-							taskList.add(taskService.getTask(userTask.getTaskId()));
-						});
-		
-		return new ModelAndView("deletetask", "taskList", taskList);
-		
+	public ModelAndView  deleteTaskView(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
+		if((boolean) session.getAttribute("userExists")) {
+			this.sessionId = sessionId;
+			map.addAttribute("sessionId", sessionId);
+			List<Task> taskList = new ArrayList<>();
+			userTaskService.getAllUserTask().stream().filter(userTask -> userTask.getUId() == sessionId)
+							.forEach(userTask ->{
+								taskList.add(taskService.getTask(userTask.getTaskId()));
+							});
+			
+			return new ModelAndView("deletetask", "taskList", taskList);
+		}
+		return new ModelAndView("errors");
 	}
 	
 	@RequestMapping(value = "/deletetask/{sessionId}", method = RequestMethod.POST)
@@ -71,16 +78,19 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.GET)
-	public ModelAndView updateTaskPage(@PathVariable("sessionId") long sessionId, ModelMap map) {
-		this.sessionId = sessionId;
-		map.addAttribute("sessionId", sessionId);
-		List<Task> taskList = new ArrayList<>();
-		userTaskService.getAllUserTask().stream().filter(userTask -> userTask.getUId() == sessionId)
-						.forEach(userTask ->{
-							taskList.add(taskService.getTask(userTask.getTaskId()));
-						});
-		
-		return new ModelAndView("updatetask", "taskList", taskList);
+	public ModelAndView updateTaskPage(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
+		if((boolean) session.getAttribute("userExists")) {
+			this.sessionId = sessionId;
+			map.addAttribute("sessionId", sessionId);
+			List<Task> taskList = new ArrayList<>();
+			userTaskService.getAllUserTask().stream().filter(userTask -> userTask.getUId() == sessionId)
+							.forEach(userTask ->{
+								taskList.add(taskService.getTask(userTask.getTaskId()));
+							});
+			
+			return new ModelAndView("updatetask", "taskList", taskList);
+		}
+		return new ModelAndView("errors");
 	}
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.POST)
@@ -92,9 +102,12 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.GET)
-	public ModelAndView updateTaskFormPage(@PathVariable("updateId") long updateId) {
-		Task task = taskService.getTask(updateId);
-		return new ModelAndView("updatetaskform", "task", task);
+	public ModelAndView updateTaskFormPage(@PathVariable("updateId") long updateId, HttpSession session) {
+		if((boolean) session.getAttribute("userExists")) {
+			Task task = taskService.getTask(updateId);
+			return new ModelAndView("updatetaskform", "task", task);
+		}
+		return new ModelAndView("errors");
 	}
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.POST)

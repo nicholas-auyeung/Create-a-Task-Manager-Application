@@ -49,6 +49,5 @@
 				<input type="submit" value="Submit" />
 			</div>
 	</form:form>
-	<a href="/dashboard/${sessionId}">Back</a>
 </body>
 </html>
