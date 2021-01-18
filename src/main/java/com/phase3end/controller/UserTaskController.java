@@ -20,6 +20,8 @@ import com.phase3end.entity.UserTask;
 import com.phase3end.service.TaskService;
 import com.phase3end.service.UserTaskService;
 
+import net.bytebuddy.asm.Advice.This;
+
 @Controller
 public class UserTaskController {
 	
@@ -33,7 +35,7 @@ public class UserTaskController {
 	
 	@RequestMapping(value = "/addtask/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView addTaskView(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
-		if((boolean) session.getAttribute("userExists")) {
+		if((boolean) session.getAttribute("userExists") && sessionId == (long)session.getAttribute("currentSessionId")) {
 			this.sessionId = sessionId;
 			map.addAttribute("sessionId", sessionId);
 			Task task = new Task();
@@ -53,7 +55,7 @@ public class UserTaskController {
 	
 	@RequestMapping(value = "/deletetask/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView  deleteTaskView(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
-		if((boolean) session.getAttribute("userExists")) {
+		if((boolean) session.getAttribute("userExists") && sessionId == (long)session.getAttribute("currentSessionId")) {
 			this.sessionId = sessionId;
 			map.addAttribute("sessionId", sessionId);
 			List<Task> taskList = new ArrayList<>();
@@ -79,7 +81,7 @@ public class UserTaskController {
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView updateTaskPage(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
-		if((boolean) session.getAttribute("userExists")) {
+		if((boolean) session.getAttribute("userExists") && sessionId == (long)session.getAttribute("currentSessionId")) {
 			this.sessionId = sessionId;
 			map.addAttribute("sessionId", sessionId);
 			List<Task> taskList = new ArrayList<>();
@@ -103,7 +105,8 @@ public class UserTaskController {
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.GET)
 	public ModelAndView updateTaskFormPage(@PathVariable("updateId") long updateId, HttpSession session) {
-		if((boolean) session.getAttribute("userExists")) {
+		
+		if((boolean) session.getAttribute("userExists") && userTaskService.getUserTask(updateId).getUId() == (long)session.getAttribute("currentSessionId")) {
 			Task task = taskService.getTask(updateId);
 			return new ModelAndView("updatetaskform", "task", task);
 		}

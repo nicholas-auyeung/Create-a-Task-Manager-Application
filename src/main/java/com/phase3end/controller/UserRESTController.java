@@ -16,15 +16,17 @@ import com.phase3end.service.UserService;
 
 @RestController
 public class UserRESTController {
-	
+	/*
 	@Autowired
 	UserService userService;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public RedirectView addUser(User usr, HttpSession session) {
 			session.setAttribute("userExists", true);
+			session.setAttribute("currentSessionId", usr.getUId());
 			userService.addUser(usr);
 			return new RedirectView("/dashboard/" + usr.getUId());
 	}
+	*/
 	
 }

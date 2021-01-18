@@ -37,14 +37,26 @@ public class UserController {
 	@Autowired
 	TaskService taskService;
 	
-	boolean userExists = false;
+	private boolean userExists = false;
 	
-	User currentSessionUser = new User();
+	private User currentSessionUser = new User();
+	
+	private long regisCounter = 0;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView userRegistration(HttpSession session) {
 		User usr = new User();
 		return new ModelAndView("registration", "form", usr);
+	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public RedirectView addUser(User usr, HttpSession session) {
+			session.setAttribute("userExists", true);
+			userService.addUser(usr);
+			regisCounter++;
+			session.setAttribute("currentSessionId", regisCounter);
+			currentSessionUser = usr;
+			return new RedirectView("/dashboard/" + usr.getUId());
 	}
 	
 	
@@ -63,6 +75,7 @@ public class UserController {
 				});
 		if(userExists) {
 			session.setAttribute("userExists", true);
+			session.setAttribute("currentSessionId", currentSessionUser.getUId());
 			return new RedirectView("/dashboard/" + currentSessionUser.getUId());
 		}
 		return new RedirectView("/login");
@@ -70,8 +83,7 @@ public class UserController {
 
 	@RequestMapping(value = "/dashboard/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView userTaskDashboard(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
-		
-		if((boolean) session.getAttribute("userExists")) {
+		if((boolean) session.getAttribute("userExists") && (Long)session.getAttribute("currentSessionId") == currentSessionUser.getUId() && sessionId == currentSessionUser.getUId()) {
 			List<Task> taskList = new ArrayList<>();
 			userTaskService.getAllUserTask().stream().filter(userTask -> userTask.getUId() == sessionId)
 							.forEach(userTask ->{
@@ -90,6 +102,7 @@ public class UserController {
 	public RedirectView userLogout(HttpSession session) {
 		currentSessionUser = null;
 		session.removeAttribute("alreadyRegistered");
+		session.setAttribute("currentSessionId", 0);
 		session.setAttribute("userExists", false);
 		return new RedirectView("/login");
 	}
