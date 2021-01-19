@@ -2,7 +2,6 @@ package com.phase3end.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,7 +21,6 @@ import com.phase3end.exception.InvalidCRUDRepoException;
 import com.phase3end.service.TaskService;
 import com.phase3end.service.UserTaskService;
 
-import net.bytebuddy.asm.Advice.This;
 
 @Controller
 public class UserTaskController {

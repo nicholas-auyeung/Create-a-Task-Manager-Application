@@ -8,7 +8,6 @@ import com.phase3end.entity.User;
 import com.phase3end.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserDAOImpl implements UserDAO{
