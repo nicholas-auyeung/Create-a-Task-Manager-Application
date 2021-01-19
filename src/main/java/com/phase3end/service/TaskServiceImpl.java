@@ -1,6 +1,8 @@
 package com.phase3end.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.phase3end.dao.TaskDAO;
@@ -16,8 +18,8 @@ public class TaskServiceImpl implements TaskService{
 	public void addTask(Task task) {
 		try {
 			taskDAO.addTask(task);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
@@ -26,8 +28,8 @@ public class TaskServiceImpl implements TaskService{
 	public void deleteTask(long taskId) {
 		try {
 			taskDAO.deleteTask(taskId);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
@@ -36,8 +38,8 @@ public class TaskServiceImpl implements TaskService{
 	public void updateTask(Task task) {
 		try {
 			taskDAO.updateTask(task);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
@@ -46,13 +48,10 @@ public class TaskServiceImpl implements TaskService{
 	public Task getTask(long taskId) {
 		try {
 			return taskDAO.getTask(taskId);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
-		return null;
-	}
-	
-	
-	
+
+	}	
 
 }

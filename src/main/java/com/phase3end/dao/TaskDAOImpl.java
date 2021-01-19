@@ -1,8 +1,10 @@
 package com.phase3end.dao;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.phase3end.entity.Task;
@@ -18,8 +20,8 @@ public class TaskDAOImpl implements TaskDAO{
 	public void addTask(Task task) {
 		try {
 			taskRepository.save(task);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
@@ -28,8 +30,8 @@ public class TaskDAOImpl implements TaskDAO{
 	public void deleteTask(long taskId) {
 		try {
 			taskRepository.deleteById(taskId);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
@@ -38,8 +40,8 @@ public class TaskDAOImpl implements TaskDAO{
 	public void updateTask(Task task) {
 		try {
 			taskRepository.save(task);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw(e);
 		}
 	}
 
@@ -47,9 +49,8 @@ public class TaskDAOImpl implements TaskDAO{
 	public Task getTask(long taskId) {
 		try {
 			return taskRepository.findById(taskId).get();
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
-		return null;
 	}
 }

@@ -2,6 +2,7 @@ package com.phase3end.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.phase3end.entity.Task;
 import com.phase3end.entity.UserTask;
+import com.phase3end.exception.InvalidCRUDRepoException;
 import com.phase3end.service.TaskService;
 import com.phase3end.service.UserTaskService;
 
@@ -34,23 +36,31 @@ public class UserTaskController {
 	private long sessionId = 0;
 	
 	@RequestMapping(value = "/addtask/{sessionId}", method = RequestMethod.GET)
-	public ModelAndView addTaskView(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) {
-		if((boolean) session.getAttribute("userExists") && sessionId == (long)session.getAttribute("currentSessionId")) {
-			this.sessionId = sessionId;
-			map.addAttribute("sessionId", sessionId);
-			Task task = new Task();
-			return new ModelAndView("createtask", "form", task);
-		}
-		return new ModelAndView("errors");
+	public ModelAndView addTaskView(@PathVariable("sessionId") long sessionId, ModelMap map, HttpSession session) throws InvalidCRUDRepoException {
+			if((boolean) session.getAttribute("userExists") && sessionId == (long)session.getAttribute("currentSessionId")) {
+				try {
+					this.sessionId = sessionId;
+					map.addAttribute("sessionId", sessionId);
+					Task task = new Task();
+					return new ModelAndView("createtask", "form", task);
+				}catch(Exception e) {
+					return new ModelAndView("errors");
+				}
+			}
+			return new ModelAndView("errors");
 	}
 	
 	@RequestMapping(value = "/addtask/{sessionId}", method = RequestMethod.POST)
-	public RedirectView addTask(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Task task) {
+	public RedirectView addTask(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Task task) throws InvalidCRUDRepoException {
 		task.setStartDate(startDate);
 		task.setEndDate(endDate);
-		taskService.addTask(task);
-		userTaskService.addUserTask(new UserTask(task.getTaskId(), sessionId));
-		return new RedirectView("/dashboard/" + sessionId);
+		try {
+			taskService.addTask(task);
+			userTaskService.addUserTask(new UserTask(task.getTaskId(), sessionId));
+			return new RedirectView("/dashboard/" + sessionId);
+		}catch(Exception e) {
+			return new RedirectView("/errors");
+		}
 	}
 	
 	@RequestMapping(value = "/deletetask/{sessionId}", method = RequestMethod.GET)
@@ -70,13 +80,17 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/deletetask/{sessionId}", method = RequestMethod.POST)
-	public RedirectView deleteTask(@RequestParam("deleteId") long deleteId) {
-		if(taskService.getTask(deleteId) != null && userTaskService.getUserTask(taskService.getTask(deleteId).getTaskId()).getUId() == sessionId) {
-			taskService.deleteTask(deleteId);
-			userTaskService.deleteUserTask(deleteId);
-			return new RedirectView("/dashboard/" + sessionId);
+	public RedirectView deleteTask(@RequestParam("deleteId") long deleteId) throws InvalidCRUDRepoException {
+		try {
+			if(taskService.getTask(deleteId) != null && userTaskService.getUserTask(taskService.getTask(deleteId).getTaskId()).getUId() == sessionId) {
+					taskService.deleteTask(deleteId);
+					userTaskService.deleteUserTask(deleteId);
+					return new RedirectView("/dashboard/" + sessionId);
+			}
+			return new RedirectView("/deletetask/" + sessionId);
+		}catch(Exception e) {
+			return new RedirectView("/deletetask/" + sessionId);
 		}
-		return new RedirectView("/deletetask/" + sessionId);
 	}
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.GET)
@@ -96,29 +110,43 @@ public class UserTaskController {
 	}
 	
 	@RequestMapping(value = "/updatetask/{sessionId}", method = RequestMethod.POST)
-	public RedirectView updateTasktoForm(@RequestParam("updateId") long updateId) {
-		if(taskService.getTask(updateId) != null && userTaskService.getUserTask(taskService.getTask(updateId).getTaskId()).getUId() == sessionId) {
-			return new RedirectView("/updatetaskform/" + updateId);
+	public RedirectView updateTasktoForm(@RequestParam("updateId") long updateId, HttpSession session){
+		try {
+			if(taskService.getTask(updateId) != null && userTaskService.getUserTask(taskService.getTask(updateId).getTaskId()).getUId() == sessionId) {
+				return new RedirectView("/updatetaskform/" + updateId);
+			}
+		}catch(Exception e) {
+			
+			
+			return new RedirectView("/updatetask/" + sessionId);
+
 		}
-		return new RedirectView("/updatetask/" + sessionId);
+		return null;
 	}
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.GET)
-	public ModelAndView updateTaskFormPage(@PathVariable("updateId") long updateId, HttpSession session) {
-		
-		if((boolean) session.getAttribute("userExists") && userTaskService.getUserTask(updateId).getUId() == (long)session.getAttribute("currentSessionId")) {
-			Task task = taskService.getTask(updateId);
-			return new ModelAndView("updatetaskform", "task", task);
-		}
-		return new ModelAndView("errors");
+	public ModelAndView updateTaskFormPage(@PathVariable("updateId") long updateId, HttpSession session) throws InvalidCRUDRepoException {
+			if((boolean) session.getAttribute("userExists") && userTaskService.getUserTask(updateId).getUId() == (long)session.getAttribute("currentSessionId")) {
+				try {
+					Task task = taskService.getTask(updateId);
+					return new ModelAndView("updatetaskform", "task", task);
+				}catch(Exception e) {
+					return new ModelAndView("errors");
+				}
+			}
+			return new ModelAndView("errors");
 	}
 	
 	@RequestMapping(value = "/updatetaskform/{updateId}", method = RequestMethod.POST)
-	public RedirectView updateTaskForm(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Task task) {
+	public RedirectView updateTaskForm(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, Task task) throws InvalidCRUDRepoException {
 		task.setStartDate(startDate);
 		task.setEndDate(endDate);
-		taskService.updateTask(task);
-		return new RedirectView("/dashboard/" + sessionId);
+		try {
+			taskService.updateTask(task);
+			return new RedirectView("/dashboard/" + sessionId);
+		}catch(Exception e) {
+			return new RedirectView("/errors");
+		}
 	}
 	
 	

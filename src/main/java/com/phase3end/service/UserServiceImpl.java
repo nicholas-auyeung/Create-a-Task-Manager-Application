@@ -3,6 +3,7 @@ package com.phase3end.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.phase3end.dao.UserDAO;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService{
 	public void addUser(User usr) {
 		try {
 			userDao.addUser(usr);
-		}catch(Exception e) {
+		}catch(DataAccessException e) {
 			throw e;
 		}
 		
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	public User getUser(long uId) {
 		try {
 			return userDao.getUser(uId);
-		}catch(Exception e) {
+		}catch(DataAccessException e) {
 			throw e;
 		}
 		
@@ -36,11 +37,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<User> getAllUsers() {
-		try {
-			return userDao.getAllUsers();
-		}catch(Exception e) {
-			throw e;
-		}
+		
+		return userDao.getAllUsers();
+		
 	}
 	
 }

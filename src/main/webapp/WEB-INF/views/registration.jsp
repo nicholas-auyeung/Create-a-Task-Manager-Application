@@ -25,7 +25,7 @@
 				<form:label path="userName"> Username: </form:label>
 				<form:input path="userName" /><br/><br/>
 				<form:label path="password"> Password: </form:label>
-				<form:input path="password" /><br/><br/>
+				<form:password path="password" /><br/><br/>
 			</div>
 			<div>
 				<input type="submit" value="Submit" />

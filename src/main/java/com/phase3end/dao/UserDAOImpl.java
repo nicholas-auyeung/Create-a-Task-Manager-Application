@@ -1,7 +1,7 @@
 package com.phase3end.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.phase3end.entity.User;
@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO{
 	public void addUser(User usr) {
 		try {
 			userRepository.save(usr);
-		}catch(Exception e) {
+		}catch(DataAccessException e) {
 			throw e;
 		}
 		
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO{
 	public User getUser(long uId) {
 		try {
 			return userRepository.findById(uId).get();
-		}catch(Exception e) {
+		}catch(DataAccessException e) {
 			throw e;
 		}
 		
@@ -38,14 +38,11 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public List<User> getAllUsers() {
-		try {
-			return (List<User>)userRepository.findAll();
-		}catch(Exception e) {
-		
-		}
-		return null;
-	}
+	
+		return (List<User>)userRepository.findAll();
 
+		
+	}
 
 	
 }

@@ -3,6 +3,7 @@ package com.phase3end.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.phase3end.entity.UserTask;
@@ -19,8 +20,8 @@ public class UserTaskDAOImpl implements UserTaskDAO{
 		
 		try {
 			userTaskRepository.save(userTask);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
@@ -29,30 +30,26 @@ public class UserTaskDAOImpl implements UserTaskDAO{
 	public void deleteUserTask(long taskId) {
 		try {
 			userTaskRepository.deleteById(taskId);
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
 		
 	}
 
 	@Override
 	public List<UserTask> getAllUserTask() {
-		try {
-			return (List<UserTask>)userTaskRepository.findAll();
-		}catch(Exception e) {
-			
-		}
-		return null;
+	
+		return (List<UserTask>)userTaskRepository.findAll();
+	
 	}
 
 	@Override
 	public UserTask getUserTask(long taskId) {
 		try {
 			return userTaskRepository.findById(taskId).get();
-		}catch(Exception e) {
-			
+		}catch(DataAccessException e) {
+			throw e;
 		}
-		return null;
 	}
 
 }
